@@ -1,0 +1,11 @@
+{
+  "name": "com.kale.networking",
+  "version": "0.1.0",
+  "displayName": "Game Networking Library",
+  "description": "Custom networking solution for Unity",
+  "unity": "2021.3",
+  "author": {
+    "name": "Kale Anderson"
+  },
+  "samples": []
+}
