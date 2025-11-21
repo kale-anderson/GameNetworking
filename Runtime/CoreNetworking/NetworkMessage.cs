@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Fall2025GameClient.KaleNetworking;
+namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
 
 enum MessageType : byte
 {

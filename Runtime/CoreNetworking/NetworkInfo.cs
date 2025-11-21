@@ -1,4 +1,4 @@
-﻿namespace Fall2025GameClient.KaleNetworking;
+﻿namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
 
 internal static class NetworkInfo
 {

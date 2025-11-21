@@ -1,4 +1,4 @@
-﻿namespace Fall2025GameClient.KaleNetworking;
+﻿namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
 
 internal class Server : IDisposable
 {

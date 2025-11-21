@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Design;
 
-namespace Fall2025GameClient.KaleNetworking;
+namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
 
 // TODO
 // - UDP packet ordering (plus duplicate handling)
