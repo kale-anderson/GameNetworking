@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
+namespace Fall2025GameClient.GameNetworking.Runtime;
 
 internal class Logger
 {

@@ -1,4 +1,4 @@
-﻿namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
+﻿namespace Fall2025GameClient.GameNetworking.Runtime;
 
 internal class ServerManager
 {

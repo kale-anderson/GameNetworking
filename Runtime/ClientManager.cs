@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
-namespace Fall2025GameClient.GameNetworking.Runtime.CoreNetworking;
+namespace Fall2025GameClient.GameNetworking.Runtime;
 
 internal class ClientManager
 {
