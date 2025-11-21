@@ -1,9 +1,10 @@
-﻿namespace Fall2025GameClient.GameNetworking.Runtime;
-
-internal static class NetworkInfo
+﻿namespace Fall2025GameClient.GameNetworking.Runtime
 {
-    public const string serverIP = "127.0.0.1";
-    public const int serverTcpPort = 42131;
-    public const int serverUdpPort = 42132;
-    public const uint MaxBufferSize = 4096;
+    internal static class NetworkInfo
+    {
+        public const string serverIP = "127.0.0.1";
+        public const int serverTcpPort = 42131;
+        public const int serverUdpPort = 42132;
+        public const uint MaxBufferSize = 4096;
+    }
 }

@@ -1,31 +1,32 @@
-﻿using System.Net;
-using System.Net.Sockets;
-namespace Fall2025GameClient.GameNetworking.Runtime;
+﻿using System.Net.Sockets;
 
-internal class ClientManager
+namespace Fall2025GameClient.GameNetworking.Runtime
 {
-    private const int connectionRetryDelayMs = 2000;
-
-    public static async Task<Client> StartClient(string serverIp, int remoteTcpPort, int remoteUdpPort)
+    internal class ClientManager
     {
-        TcpClient tcpClient = new TcpClient();
-        Logger.Log("Connecting to server...");
-        while (true)
+        private const int connectionRetryDelayMs = 2000;
+
+        public static async Task<Client> StartClient(string serverIp, int remoteTcpPort, int remoteUdpPort)
         {
-            try
+            TcpClient tcpClient = new TcpClient();
+            Logger.Log("Connecting to server...");
+            while (true)
             {
-                await tcpClient.ConnectAsync(serverIp, remoteTcpPort);
-                break;
+                try
+                {
+                    await tcpClient.ConnectAsync(serverIp, remoteTcpPort);
+                    break;
+                }
+                catch (SocketException e)
+                {
+                    Logger.Log($"Connection failed: {e.Message}. Retrying in {connectionRetryDelayMs} ms...");
+                    await Task.Delay(connectionRetryDelayMs);
+                }
             }
-            catch (SocketException e)
-            {
-                Logger.Log($"Connection failed: {e.Message}. Retrying in {connectionRetryDelayMs} ms...");
-                await Task.Delay(connectionRetryDelayMs);
-            }
+            Client client = new Client(tcpClient, remoteUdpPort);
+            Logger.Log("Connected to server.");
+            client.StartListening();
+            return client;
         }
-        Client client = new Client(tcpClient, remoteUdpPort);
-        Logger.Log("Connected to server.");
-        client.StartListening();
-        return client;
     }
 }

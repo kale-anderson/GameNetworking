@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fall2025GameClient.GameNetworking.Runtime;
-
-internal class Logger
+﻿namespace Fall2025GameClient.GameNetworking.Runtime
 {
-    public static void Log(string message)
+    internal class Logger
     {
-        Console.WriteLine($"[{DateTime.Now}] {message}");
+        public static void Log(string message)
+        {
+            Console.WriteLine($"[{DateTime.Now}] {message}");
+        }
     }
 }
+
+

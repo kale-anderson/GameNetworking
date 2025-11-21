@@ -1,54 +1,59 @@
-﻿namespace Fall2025GameClient.GameNetworking.Runtime;
+﻿using System.Net;
+using System.Net.Sockets;
+using System.Collections.Concurrent;
 
-internal class ServerClient : IDisposable
+namespace Fall2025GameClient.GameNetworking.Runtime
 {
-    private static UdpGateway udpGateway;
-    private static ConcurrentDictionary<uint, IPEndPoint> udpEpMapping = new ConcurrentDictionary<uint, IPEndPoint>();
-
-    private uint clientId;
-    private TcpGateway tcpGateway;
-
-    public delegate void DisconnectedEventHandler(uint clientId);
-    public event DisconnectedEventHandler? OnDisconnected;
-
-    public ServerClient(TcpClient tcpClient, uint clientId)
+    internal class ServerClient : IDisposable
     {
-        this.clientId = clientId;
-        tcpGateway = new TcpGateway(tcpClient);
-        tcpGateway.OnDisconnected += (sender, e)
-            =>
-        { OnDisconnected?.Invoke(clientId); };
-        Task.Run(() => tcpGateway.SendAsync(new ClientIdMessage(clientId)));
-        Logger.Log("Sent client ID to client.");
-    }
+        private static UdpGateway udpGateway;
+        private static ConcurrentDictionary<uint, IPEndPoint> udpEpMapping = new ConcurrentDictionary<uint, IPEndPoint>();
 
-    static ServerClient()
-    {
-        udpGateway = new UdpGateway(new IPEndPoint(IPAddress.Any, NetworkInfo.serverUdpPort));
-    }
+        private uint clientId;
+        private TcpGateway tcpGateway;
 
-    public void SetUdpEndPoint(IPEndPoint clientEp)
-    {
-        udpEpMapping[clientId] = clientEp;
-    }
+        public delegate void DisconnectedEventHandler(uint clientId);
+        public event DisconnectedEventHandler? OnDisconnected;
 
-    public void StartListening()
-    {
-        tcpGateway.StartListening();
-        udpGateway.StartListening();
-    }
+        public ServerClient(TcpClient tcpClient, uint clientId)
+        {
+            this.clientId = clientId;
+            tcpGateway = new TcpGateway(tcpClient);
+            tcpGateway.OnDisconnected += (sender, e)
+                =>
+            { OnDisconnected?.Invoke(clientId); };
+            Task.Run(() => tcpGateway.SendAsync(new ClientIdMessage(clientId)));
+            Logger.Log("Sent client ID to client.");
+        }
 
-    public async Task SendTcpAsync(NetworkMessage message)
-        => await tcpGateway.SendAsync(message);
+        static ServerClient()
+        {
+            udpGateway = new UdpGateway(new IPEndPoint(IPAddress.Any, NetworkInfo.serverUdpPort));
+        }
 
-    public static async Task SendUdpAsync(uint clientId, NetworkMessage message)
-    {
-        if (udpEpMapping.TryGetValue(clientId, out IPEndPoint? clientEp))
-            await udpGateway.SendAsync(message, clientEp);
-    }
+        public void SetUdpEndPoint(IPEndPoint clientEp)
+        {
+            udpEpMapping[clientId] = clientEp;
+        }
 
-    public void Dispose()
-    {
-        tcpGateway.Dispose();
+        public void StartListening()
+        {
+            tcpGateway.StartListening();
+            udpGateway.StartListening();
+        }
+
+        public async Task SendTcpAsync(NetworkMessage message)
+            => await tcpGateway.SendAsync(message);
+
+        public static async Task SendUdpAsync(uint clientId, NetworkMessage message)
+        {
+            if (udpEpMapping.TryGetValue(clientId, out IPEndPoint? clientEp))
+                await udpGateway.SendAsync(message, clientEp);
+        }
+
+        public void Dispose()
+        {
+            tcpGateway.Dispose();
+        }
     }
 }
